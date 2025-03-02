@@ -1,5 +1,9 @@
 # fetch-hsiangyuan
 
+## Technical Details
+- Language: Python
+- Framework: Flask
+
 ## Build docker
 ```
 docker build -t receipt-processor .
