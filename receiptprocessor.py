@@ -4,10 +4,15 @@ import math
 from datetime import datetime
 
 app  = Flask(__name__)
-
-
 receipts = {}
 
+"""
+Calculate points of the receipt
+:param receipt: the receipt
+:type receipt: json
+:return: The total calculated points for the receipt
+:rtype: int
+"""
 def calculate_points(receipt):
     point = 0
     retailer = receipt["retailer"]
@@ -40,11 +45,12 @@ def calculate_points(receipt):
 
     return point
 
-
+# Health check endpoint
 @app.route("/", methods=["GET"])
 def health():
     return "Healthy" ,200
 
+# Endpoint to process receipts and calculate points
 @app.route("/receipts/process",methods =["POST"])
 def process_receipts():
     try:
@@ -60,9 +66,11 @@ def process_receipts():
         receipts[id] = points
         print(receipts)
         return jsonify({"id": id})
+
     except Exception as e:
         return jsonify({"error": "The receipt is invalid."}) ,400
 
+# Endpoint to retrieve points for a given receipt ID
 @app.route("/receipts/<id>/points", methods=["GET"])
 def get_points(id):
     if id in receipts:
@@ -70,8 +78,5 @@ def get_points(id):
     return jsonify({"error": "No receipt found for that ID."}), 404
 
 
-
 if __name__ == "__main__":
     app.run(debug=True ,host="0.0.0.0",port=8080)
-
-
